@@ -1,19 +1,14 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import LoginPage from "./pages/loginPage";
-import { SignUpPage } from './component/signUp_login/signUpPage';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AppRouter from './routers/router';
 function App() {
   return (
-    <BrowserRouter>
     <div className="App">
-          <Routes>
-            <Route path="/" element={<LoginPage/>}></Route>
-            <Route path="/SignUp" element={<SignUpPage/>}></Route>
-        </Routes>
+        <AppRouter/>
         <ToastContainer
         position="top-right"
-        autoClose={3000}
+        autoClose={4000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -24,7 +19,6 @@ function App() {
         theme="light"
         />
     </div>
-    </BrowserRouter>
   );
 }
 
