@@ -10,7 +10,7 @@ const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/Home" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signUp" element={<SignUpPage />} />

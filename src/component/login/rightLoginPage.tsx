@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box } from '@mui/material';
 import {  toast } from "react-toastify";
 import InputReuseable from "../input/input";
@@ -8,6 +9,7 @@ import { PRIMARY } from "@/helper/colors";
 import { handleLoginPage } from "@/services/userService";
 
 function RightLoginPage() {
+    var navigate = useNavigate();
     const [valueLogin, setValueLogin] = useState('')
     const [valuePassword, setValuePassword] = useState('')
     let defaultValue = {
@@ -19,12 +21,10 @@ function RightLoginPage() {
 
         setCheckValid(defaultValue)
         if (!valueLogin) {
-            toast.error('Please enter your email or phone number!')
             setCheckValid({...defaultValue, isValidLogin:false})
             return false
         }
         if (!valuePassword) {
-            toast.error('Please enter your password!')
             setCheckValid({...defaultValue, isValidPassWord:false})
             return false
         }
@@ -32,10 +32,21 @@ function RightLoginPage() {
     }
 
     const handleLogin = async () =>{
-        // let check = validateData()
-       let response = await handleLoginPage(valueLogin, valuePassword)
-        console.log('check: ', response)
+        let check = validateData()
+        let response = await handleLoginPage(valueLogin, valuePassword) // gọi api đăng nhập
+        let validate = response.data
+        if (check === true) {
+            if(+validate.EC === 0){
+                toast.success(validate.EM)
+                navigate("/home")
+            }
+            else{
+                toast.error(validate.EM)
+            }
+        }else{
+            toast.error(validate.EM)
         }
+        } 
 
     return(
         <div className="right lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
@@ -100,7 +111,7 @@ function RightLoginPage() {
                                 </div>
 
                                 <div className="mx-auto max-w-xs">
-                                    <form action="">
+                                    <form>
                                     <InputReuseable
                                         placeholder="Email or Phone number"
                                         type="text"
@@ -141,7 +152,6 @@ function RightLoginPage() {
                                             Đăng nhập
                                         </ButtonBase>
                                     </Box>
-                                    
                                     </form>
                                     <p className=" mt-6 text-sm text-gray-600 text-center ">
                                     Bạn chưa có tài khoản? <Link to="/SignUp" style={{color:PRIMARY.MEDIUM}}>Đăng ký</Link> tại đây

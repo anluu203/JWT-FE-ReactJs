@@ -14,8 +14,8 @@ const handleRegister =  (
 }
 
 const handleLoginPage =  (
-    valueLogin: string| number,
-    valuePassword: string | number
+    valueLogin: any,
+    valuePassword: any
 ) =>{
      return axios.post('http://localhost:8080/api/v1/login', {
         valueLogin,
