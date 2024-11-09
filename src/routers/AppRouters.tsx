@@ -9,6 +9,7 @@ import LoginPage from "@/pages/loginPage";
 import { HomePage } from "@/pages/home";
 import Navbar from "@/component/navigation/navbar";
 import { AccountContext } from "@/App";
+import PrivateRouters from "./PrivateRouters";
 
 
 const AppRouter: React.FC = () => {
@@ -24,7 +25,7 @@ const AppRouter: React.FC = () => {
       
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/home" element={<PrivateRouters component={HomePage} />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
       </Routes>

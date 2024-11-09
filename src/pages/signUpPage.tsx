@@ -4,9 +4,9 @@ import {  toast } from "react-toastify";
 import { handleRegister } from "@/services/userService";
 import { Box } from '@mui/material';
 import LeftLoginPage from "../component/login/leftLoginPage";
-import ButtonBase from "../component/button/button";
+import ButtonBase from "../component/atoms/button/button";
 import { PRIMARY } from "@/helper/colors";
-import InputReuseable from "../component/input/input";
+import InputReuseable from "../component/atoms/input/input";
 export const SignUpPage = () => {
     var navigate = useNavigate();
     const [email, setEmail] = useState('')

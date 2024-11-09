@@ -2,12 +2,12 @@ import axios from "axios"
 const handleRegister =  (
     email:string | number,
     phone:number | string,
-    userName:string | number,
+    username:string | number,
     password: string | number ) =>{
      return axios.post('http://localhost:8080/api/v1/register', {
             email,
             phone,
-            userName,
+            username,
             password,
         }
     )
@@ -24,4 +24,10 @@ const handleLoginPage =  (
 }
 
 
-export {handleRegister, handleLoginPage}
+// Define an interface for the user structure if known
+
+
+const handleFetchUsers = () => {
+    return axios.get('http://localhost:8080/api/v1/user/getAllUser')
+};
+export {handleRegister, handleLoginPage, handleFetchUsers}

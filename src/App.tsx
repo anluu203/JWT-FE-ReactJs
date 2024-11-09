@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AppRouter from "./routers/router";
+import AppRouter from "./routers/AppRouters";
 
 // Định nghĩa kiểu cho `account`
 interface AccountType {
@@ -21,7 +21,6 @@ function App() {
     isAuthenticated: false,
     token: "",
   });
-
   useEffect(() => {
     const session = sessionStorage.getItem("account");
     if (session) {
