@@ -1,7 +1,7 @@
 import  { forwardRef } from 'react';
 import { LoadingButton, LoadingButtonProps } from '@mui/lab';
 import _ from 'lodash'
-import { PRIMARY, RED, GRAY_SCALE, BACK_GROUND, WHITE } from '@/helper/colors';
+import { PRIMARY, RED, WHITE } from '@/helper/colors';
 
 type Props = {
   fontWeight?: string;
@@ -25,7 +25,7 @@ const ButtonBase = forwardRef<HTMLButtonElement, Props>(
     ref
   ) => {
     const backgroundColor = () => {
-      if(theme === 'submit') return BACK_GROUND
+      if(theme === 'submit') return WHITE
       else if (theme === 'cancel') return RED.LIGHT
       else if (theme === 'add') return PRIMARY.LIGHT
     }

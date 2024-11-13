@@ -1,20 +1,36 @@
-import PaginationPage from "@/component/pagination/pagination";
-import { UserList } from "@/component/usersList/usersList";
-
+import { UserList } from "@/component/handleUsersList/usersList/usersList";
+import ButtonBase from "@/component/atoms/button/button";
 
 export function HomePage() {
 
   return (
-    <div className="home-container container">
+    <div className="home-container ">
       <h1 className="text-center text-4xl font-bold py-4">
         List user
       </h1>
-      <div className="container flex justify-center">
+     
+      <div className="flex justify-center">
+          <div>
+            <div className="list-button mb-3">
+              <ButtonBase
+                theme="add"
+                style={{marginRight:'1rem'}}
+              >
+                Refresh
+              </ButtonBase>
+
+              <ButtonBase
+                theme="add"
+              >
+                Add new user
+              </ButtonBase>
+            </div>
           <UserList/>
+        </div>
       </div>
-      <div className="pagination-page container flex justify-center py-8">
+      {/* <div className="pagination-page flex justify-center py-8">
           <PaginationPage />
-      </div>
+      </div> */}
     </div>
   );
 }

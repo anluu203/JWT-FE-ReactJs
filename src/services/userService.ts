@@ -1,3 +1,4 @@
+import { User } from "@/component/handleUsersList/usersList/usersList"
 import axios from "axios"
 const handleRegister =  (
     email:string | number,
@@ -24,10 +25,16 @@ const handleLoginPage =  (
 }
 
 
-// Define an interface for the user structure if known
 
-
-const handleFetchUsers = () => {
-    return axios.get('http://localhost:8080/api/v1/user/getAllUser')
+const handleFetchUsers = (page:number, results:number) => {
+    return axios.get(`http://localhost:8080/api/v1/user/getAllUser?page=${page}&results=${results}`)
 };
-export {handleRegister, handleLoginPage, handleFetchUsers}
+
+
+const handleDeleteUser = (user:User | null) => {
+    if (user) {
+        return axios.delete('http://localhost:8080/api/v1/user/delete', { data: { id: user.id } });
+      }
+      return Promise.reject(new Error("User is null")); // Or handle null case as needed
+}
+export {handleRegister, handleLoginPage, handleFetchUsers,handleDeleteUser }
