@@ -11,22 +11,8 @@ export function HomePage() {
      
       <div className="flex justify-center">
           <div>
-            <div className="list-button mb-3">
-              <ButtonBase
-                theme="add"
-                style={{marginRight:'1rem'}}
-              >
-                Refresh
-              </ButtonBase>
-
-              <ButtonBase
-                theme="add"
-              >
-                Add new user
-              </ButtonBase>
-            </div>
-          <UserList/>
-        </div>
+            <UserList/>
+          </div>
       </div>
       {/* <div className="pagination-page flex justify-center py-8">
           <PaginationPage />

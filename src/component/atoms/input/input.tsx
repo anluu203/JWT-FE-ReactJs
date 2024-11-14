@@ -3,11 +3,11 @@ import React, { ChangeEvent } from 'react';
 interface InputProps {
   label?: string;
   placeholder?: string;
-  value: string;
+  value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
-  name: string;
-  className:string | {};
+  name?: string;
+  className?:string | {};
 }
 
 const InputReuseable: React.FC<InputProps> = ({ label, placeholder, value, onChange, type = 'text', name, className ='' }) => {
@@ -24,7 +24,7 @@ const InputReuseable: React.FC<InputProps> = ({ label, placeholder, value, onCha
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`w-full px-8 py-4 
+        className={`w-full px-4 py-4 
                     rounded-lg font-medium 
                     bg-gray-100 border border-gray-200 
                     placeholder-gray-500 text-sm 

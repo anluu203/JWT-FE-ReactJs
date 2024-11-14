@@ -37,4 +37,9 @@ const handleDeleteUser = (user:User | null) => {
       }
       return Promise.reject(new Error("User is null")); // Or handle null case as needed
 }
-export {handleRegister, handleLoginPage, handleFetchUsers,handleDeleteUser }
+
+const fetchPosition = () => {
+    return axios.get('http://localhost:8080/api/v1//position/read')
+}
+export {handleRegister, handleLoginPage, handleFetchUsers,
+        handleDeleteUser, fetchPosition }

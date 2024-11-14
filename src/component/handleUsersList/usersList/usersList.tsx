@@ -4,8 +4,10 @@ import { handleFetchUsers } from "@/services/userService";
 import UserTable from "../usersTable/usersTable";
 import PaginationComponent from "../pagination/pagination";
 
-interface Position {
+export interface Position{
+  id?: number;
   name: string;
+  description: string;
 }
 
 export interface User {
@@ -20,7 +22,7 @@ export interface User {
 export const UserList: React.FC = () => {
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentResults, setCurrentResults] = useState(3);
+  const [currentResults, setCurrentResults] = useState(2);
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchUsers = async () => {

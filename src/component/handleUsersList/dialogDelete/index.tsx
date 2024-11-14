@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Divider } from '@mui/material';
 
 interface PropDialog{
     open: boolean;
@@ -22,9 +23,10 @@ export default function DialogDelete({open, onClose, onConfirm}: PropDialog) {
         onClose={onClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        fullWidth={true}
       >
         <DialogTitle id="alert-dialog-title">
-          {"Alert from sever"}
+          {"Delete User"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

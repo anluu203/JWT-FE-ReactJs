@@ -1,11 +1,11 @@
 // UserTable.tsx
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { User } from "../usersList/usersList";
 import ButtonBase from "../../atoms/button/button";
 import { handleDeleteUser } from "@/services/userService";
 import DialogDelete from "../dialogDelete";
+import DialogCreate from "../dialogCreate";
 interface UserTableProps {
   listUsers: User[];
   fetchUsers: () => Promise<void>;
@@ -14,16 +14,17 @@ interface UserTableProps {
 
 const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
 
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openDialogDelete, setOpenDialogDelete] = useState(false)
+  const [openDialogCreate, setDialogCreate] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User|null>(null)
 
-  const handleOpenDialog = (user: User) => {
+  const handleOpenDialogDelete = (user: User) => {
     setSelectedUser(user)
-    setOpenDialog(true);
+    setOpenDialogDelete(true);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleCloseDialogDelete = () => {
+    setOpenDialogDelete(false);
     setSelectedUser(null)
   };
 
@@ -37,11 +38,34 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
       toast.error(response.data.EM)
       await fetchUsers()
     }
-    handleCloseDialog()
+    handleCloseDialogDelete()
+  }
+
+  const handleOpenDialogCreate = () => {
+    setDialogCreate(true)
+  }
+
+  const handleCloseDialogCreate = () => {
+    setDialogCreate(false)
   }
 
   return (
     <>
+      <div className="list-button mb-3">
+        <ButtonBase
+          theme="add"
+          style={{marginRight:'1rem'}}
+        >
+          Refresh
+        </ButtonBase>
+
+        <ButtonBase
+          theme="add"
+          onClick={handleOpenDialogCreate}
+        >
+          Add new user
+        </ButtonBase>
+      </div>
       <table className="w-full text-sm text-left rtl:text-right text-gray-500  overflow-x-auto shadow-md sm:rounded-lg">
       <thead className="text-xs text-gray-700 uppercase bg-gray-200 ">
         <tr>
@@ -67,11 +91,15 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
               <td className="px-6 py-4">{item.email}</td>
               <td className="px-6 py-4">{item.position ? item.position.name : ''}</td>
               <td className="px-6 py-4">
-                <Link to="#" className="font-medium text-blue-600 hover:underline">Edit</Link>
+              <ButtonBase
+                    theme="add"
+                >
+                      Edit
+                      </ButtonBase>
                 <ButtonBase
                     theme="cancel"
                     style={{marginLeft:'1rem'}}
-                    onClick={() => handleOpenDialog(item)}
+                    onClick={() => handleOpenDialogDelete(item)}
                 >
                     Delete
                 </ButtonBase>
@@ -89,9 +117,16 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
     </table>
     <div className="dialog-delete">
         <DialogDelete
-          open={openDialog}
-          onClose={handleCloseDialog}
+          open={openDialogDelete}
+          onClose={handleCloseDialogDelete}
           onConfirm={handleConfirmDelete }
+        />
+    </div>
+    <div className="dialog-update">
+        <DialogCreate
+          open={openDialogCreate}
+          onClose={handleCloseDialogCreate}
+          onConfirm={handleCloseDialogCreate }
         />
     </div>
     </>
