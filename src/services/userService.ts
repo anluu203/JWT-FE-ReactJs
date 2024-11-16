@@ -1,5 +1,7 @@
 import { User } from "@/component/handleUsersList/usersList/usersList"
 import axios from "axios"
+
+
 const handleRegister =  (
     email:string | number,
     phone:number | string,
@@ -41,5 +43,30 @@ const handleDeleteUser = (user:User | null) => {
 const fetchPosition = () => {
     return axios.get('http://localhost:8080/api/v1//position/read')
 }
+
+const handleCreateUser = (
+    email:string | number,
+    phone:number | string,
+    username:string | number,
+    password: string | number,
+    address: string | number,
+    sex: string,
+    positionID: number| string) =>{
+     return axios.post('http://localhost:8080/api/v1/user/create', {
+            email,
+            phone,
+            username,
+            password,
+            address,
+            sex,
+            positionID
+        }
+    )
+}
+
+
+
+
+
 export {handleRegister, handleLoginPage, handleFetchUsers,
-        handleDeleteUser, fetchPosition }
+        handleDeleteUser, fetchPosition, handleCreateUser }

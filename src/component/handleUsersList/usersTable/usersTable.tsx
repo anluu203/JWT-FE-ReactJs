@@ -9,10 +9,12 @@ import DialogCreate from "../dialogCreate";
 interface UserTableProps {
   listUsers: User[];
   fetchUsers: () => Promise<void>;
+  currentResults: number
+  currentPage:number
 }
 
 
-const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
+const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPage, currentResults }) => {
 
   const [openDialogDelete, setOpenDialogDelete] = useState(false)
   const [openDialogCreate, setDialogCreate] = useState(false)
@@ -49,6 +51,10 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
     setDialogCreate(false)
   }
 
+  const handleConfirmCreate = async () => {
+    console.log('create data successfully')
+    await fetchUsers();
+  }
   return (
     <>
       <div className="list-button mb-3">
@@ -71,9 +77,10 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
         <tr>
           <th scope="col" className="px-6 py-3">NO</th>
           <th scope="col" className="px-6 py-3">USER NAME</th>
-          <th scope="col" className="px-6 py-3">SEX</th>
+          <th scope="col" className="px-6 py-3">GENDER</th>
           <th scope="col" className="px-6 py-3">PHONE</th>
           <th scope="col" className="px-6 py-3">EMAIL</th>
+          <th scope="col" className="px-6 py-3">ADDRESS</th>
           <th scope="col" className="px-6 py-3">POSITION</th>
           <th scope="col" className="px-6 py-3">ACTION</th>
         </tr>
@@ -83,12 +90,13 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
           listUsers.map((item, index) => (
             <tr key={`row-${index}`} className="bg-white border-b dark:bg-gray-800">
               <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                {index + 1}
+                { (currentPage - 1) * currentResults + index + 1}
               </th>
               <td className="px-6 py-4">{item.username}</td>
               <td className="px-6 py-4">{item.sex}</td>
               <td className="px-6 py-4">{item.phone}</td>
               <td className="px-6 py-4">{item.email}</td>
+              <td className="px-6 py-4">{item.address}</td>
               <td className="px-6 py-4">{item.position ? item.position.name : ''}</td>
               <td className="px-6 py-4">
               <ButtonBase
@@ -126,7 +134,7 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers }) => {
         <DialogCreate
           open={openDialogCreate}
           onClose={handleCloseDialogCreate}
-          onConfirm={handleCloseDialogCreate }
+          onConfirm={handleConfirmCreate}
         />
     </div>
     </>
