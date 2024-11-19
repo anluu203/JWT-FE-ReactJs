@@ -13,12 +13,17 @@ interface UserTableProps {
   currentPage:number
 }
 
-
 const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPage, currentResults }) => {
 
+
+  
   const [openDialogDelete, setOpenDialogDelete] = useState(false)
   const [openDialogCreate, setDialogCreate] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User|null>(null)
+
+  const [actionDialog, setActionDialog] = useState('CREATE')
+  const [dataDialog, setDataDialog] = useState({})
+  const [disabled, setDisabled] = useState<boolean>(false);
 
   const handleOpenDialogDelete = (user: User) => {
     setSelectedUser(user)
@@ -44,17 +49,29 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
   }
 
   const handleOpenDialogCreate = () => {
+    setActionDialog('CREATE')
     setDialogCreate(true)
   }
 
   const handleCloseDialogCreate = () => {
     setDialogCreate(false)
+    setDataDialog({})
+    setDisabled(false)
   }
 
   const handleConfirmCreate = async () => {
     console.log('create data successfully')
     await fetchUsers();
   }
+
+  const handleOpenDialogUpdate = (user: User) => {
+    setDialogCreate(true)
+    setActionDialog('UPDATE')
+    setDataDialog(user)
+    setDisabled(true)
+  }
+
+
   return (
     <>
       <div className="list-button mb-3">
@@ -67,7 +84,7 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
 
         <ButtonBase
           theme="add"
-          onClick={handleOpenDialogCreate}
+          onClick={() => handleOpenDialogCreate()}
         >
           Add new user
         </ButtonBase>
@@ -76,6 +93,7 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
       <thead className="text-xs text-gray-700 uppercase bg-gray-200 ">
         <tr>
           <th scope="col" className="px-6 py-3">NO</th>
+          <th scope="col" className="px-6 py-3">ID</th>
           <th scope="col" className="px-6 py-3">USER NAME</th>
           <th scope="col" className="px-6 py-3">GENDER</th>
           <th scope="col" className="px-6 py-3">PHONE</th>
@@ -92,6 +110,7 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
               <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                 { (currentPage - 1) * currentResults + index + 1}
               </th>
+              <td className="px-6 py-4">{item.id}</td>
               <td className="px-6 py-4">{item.username}</td>
               <td className="px-6 py-4">{item.sex}</td>
               <td className="px-6 py-4">{item.phone}</td>
@@ -101,6 +120,7 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
               <td className="px-6 py-4">
               <ButtonBase
                     theme="add"
+                    onClick={() => handleOpenDialogUpdate(item)}
                 >
                       Edit
                       </ButtonBase>
@@ -135,6 +155,9 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
           open={openDialogCreate}
           onClose={handleCloseDialogCreate}
           onConfirm={handleConfirmCreate}
+          actionDialog={actionDialog}
+          dataDialog={dataDialog}
+          disabled={disabled}
         />
     </div>
     </>

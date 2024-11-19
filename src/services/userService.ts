@@ -1,6 +1,7 @@
+import { UserDataProps } from "@/component/handleUsersList/dialogCreate"
 import { User } from "@/component/handleUsersList/usersList/usersList"
 import axios from "axios"
-
+import { mapUserToUserDataProps } from "@/component/handleUsersList/dialogCreate"
 
 const handleRegister =  (
     email:string | number,
@@ -63,10 +64,26 @@ const handleCreateUser = (
         }
     )
 }
-
-
+const handleUpdateUser =( 
+    id: string| number | undefined,
+    username:string | number,
+    address: string | number,
+    sex: string,
+    positionID:string| number
+    ) =>{
+        return axios.put('http://localhost:8080/api/v1/user/update', {
+                     id,
+                     username,
+                     address,
+                     sex,
+                     positionID
+               
+             });
+}
 
 
 
 export {handleRegister, handleLoginPage, handleFetchUsers,
-        handleDeleteUser, fetchPosition, handleCreateUser }
+        handleDeleteUser, fetchPosition, handleCreateUser,
+        handleUpdateUser
+    }

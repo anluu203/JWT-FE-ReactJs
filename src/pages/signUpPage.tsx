@@ -87,7 +87,6 @@ export const SignUpPage = () => {
                 toast.error(validate.EM)
             }
             }
-            
         }
     }
     return (

@@ -7,10 +7,11 @@ interface InputProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
   name?: string;
+  disabled?:boolean
   className?:string | {};
 }
 
-const InputReuseable: React.FC<InputProps> = ({ label, placeholder, value, onChange, type = 'text', name, className ='' }) => {
+const InputReuseable: React.FC<InputProps> = ({ label, placeholder, value, onChange, type = 'text', name, className ='', disabled }) => {
   return (
     <>
     {label && (
@@ -21,6 +22,7 @@ const InputReuseable: React.FC<InputProps> = ({ label, placeholder, value, onCha
       <input
         type={type}
         name={name}
+        disabled={disabled}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

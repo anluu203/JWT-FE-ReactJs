@@ -11,30 +11,43 @@ import _ from 'lodash';
 import { toast } from 'react-toastify';
 import { fetchPosition } from '@/services/userService';
 import { Position } from '../usersList/usersList';
-import { handleCreateUser } from '@/services/userService';
-
-interface PropDialog{
+import { handleCreateUser, handleUpdateUser } from '@/services/userService';
+import { User } from '../usersList/usersList';
+export interface PropDialog{
     open: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    actionDialog:string;
+    dataDialog:{};
+    disabled:boolean
 }
 
 export interface UserDataProps {
+  id?: number | string;
   email: string;
   userName: string;
   phone: string;
   address: string;
   password: string;
   sex: string;
-  getPosition: string;
+  getPosition: string| number;
 }
 
-
-export default function DialogCreate({open, onClose, onConfirm}: PropDialog) {
-
-  
-
+export  const mapUserToUserDataProps = (user: User): UserDataProps => {
+  return {
+    id: user.id, // Thêm ánh xạ id
+    email: user.email,
+    userName: user.username, // Chú ý viết đúng key "userName" thay vì "username"
+    phone: user.phone,
+    address: user.address || '',
+    password: '', // Không truyền mật khẩu từ User
+    sex: user.sex || 'Male',
+    getPosition: user.position?.id || '',
+  };
+};
+export default function DialogCreate({open, onClose, onConfirm, actionDialog, dataDialog, disabled}: PropDialog) {
 const defaultUserData:UserDataProps = {
+    id: '',
     email: '',
     userName:'',
     phone:'',
@@ -45,6 +58,7 @@ const defaultUserData:UserDataProps = {
   } 
 
   const defaultValidInput = {
+    id:true,
     email: true,
     userName: true,
     phone: true,
@@ -57,7 +71,6 @@ const defaultUserData:UserDataProps = {
   const [userData, setUserData] = useState(defaultUserData)
   const [position, setPosition ] = useState<Position[]| []>([])
   const [validInput, setValidInput] = useState(defaultValidInput)
-
 
   const handleFetchPosition = async () =>{
     let response = await fetchPosition()
@@ -105,7 +118,7 @@ const defaultUserData:UserDataProps = {
     setValidInput(defaultValidInput)
   }
 
-  const handleSave = async () =>{
+  const handleCreate = async () =>{
     let check = checkValidateInput()
     if (check) {
       let data = userData;
@@ -122,11 +135,34 @@ const defaultUserData:UserDataProps = {
     }
   }
 
+  const handleUpdate = async () => {
+    let data = userData;
+    let res= await handleUpdateUser(data.id,data.userName, data.address, data.sex, data.getPosition)
+    let validate = res.data
+      if (validate.EC === 0) {
+        toast.success(validate.EM)
+        setUserData(defaultUserData)
+        onConfirm()
+        handleClose()
+      } else {
+        toast.error(validate.EM)
+      }
+    }
+  useEffect(() => {
+    handleFetchPosition();
+  }, []);
 
   useEffect(() => {
-    handleFetchPosition()
-  },[])
+  if (dataDialog && 'id' in dataDialog) {
+    const mappedData = mapUserToUserDataProps(dataDialog as User); // Ép kiểu
+    setUserData(mappedData);
+    console.log('mappeddata: ', mappedData)
+  } else {
+    setUserData(defaultUserData); // Sử dụng dữ liệu mặc định nếu không hợp lệ
 
+  }
+}, [dataDialog]);
+  let inputClassNameDisable = 'my-1 w-full text-sm text-gray-900 bg-gray-200 border-0 border-b-2 border-gray-300 rounded-none'
   let inputClassName =  'my-1 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 rounded-none'
   let inputClassNameError = 'my-1 w-full text-sm text-gray-900 bg-red-50 focus:bg-red-50 border-0 border-b-2 border-red-500 placeholder-red-600 text-red-900 focus:border-red-600 rounded-none'
   return (
@@ -139,7 +175,7 @@ const defaultUserData:UserDataProps = {
         fullWidth={true}
       >
         <DialogTitle id="alert-dialog-title">
-          {"Create new user"}
+          {actionDialog === 'CREATE' ? 'Create new user' : 'Update current uer'}
         </DialogTitle>
         <Divider/>
         <DialogContent>
@@ -148,10 +184,13 @@ const defaultUserData:UserDataProps = {
                     <InputReuseable
                     placeholder="Email address:"
                     value={userData.email}
+                    disabled={disabled}
                     type="email"
                     onChange={(e) => handleOnchangeInput(e.target.value, "email")}
                     className={
-                      Object.values(validInput).some((value) => !value)
+                      disabled 
+                        ? inputClassNameDisable
+                        : Object.values(validInput).some((value) => !value)
                         ? inputClassNameError
                         : inputClassName
                     }
@@ -173,9 +212,12 @@ const defaultUserData:UserDataProps = {
                     <InputReuseable
                     placeholder="Phone"
                     value={userData.phone}
+                    disabled={disabled}
                     onChange={(e) => handleOnchangeInput(e.target.value, "phone")}
                     className={
-                      Object.values(validInput).some((value) => !value)
+                      disabled 
+                        ? inputClassNameDisable
+                        : Object.values(validInput).some((value) => !value)
                         ? inputClassNameError
                         : inputClassName
                     }
@@ -186,9 +228,12 @@ const defaultUserData:UserDataProps = {
                     placeholder="Password"
                     value={userData.password}
                     type="password"
+                    disabled={disabled}
                     onChange={(e) => handleOnchangeInput(e.target.value, "password")}
                     className={
-                      Object.values(validInput).some((value) => !value)
+                      disabled 
+                        ? inputClassNameDisable
+                        : Object.values(validInput).some((value) => !value)
                         ? inputClassNameError
                         : inputClassName
                     }
@@ -244,7 +289,9 @@ const defaultUserData:UserDataProps = {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={actionDialog === "CREATE" ? handleCreate : handleUpdate}>
+            {actionDialog === "CREATE" ? "CREATE" : "SAVE"}
+          </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
