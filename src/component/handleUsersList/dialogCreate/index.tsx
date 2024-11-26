@@ -156,7 +156,6 @@ const defaultUserData:UserDataProps = {
   if (dataDialog && 'id' in dataDialog) {
     const mappedData = mapUserToUserDataProps(dataDialog as User); // Ép kiểu
     setUserData(mappedData);
-    console.log('mappeddata: ', mappedData)
   } else {
     setUserData(defaultUserData); // Sử dụng dữ liệu mặc định nếu không hợp lệ
 

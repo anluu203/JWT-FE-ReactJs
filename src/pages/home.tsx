@@ -1,6 +1,4 @@
 import { UserList } from "@/component/handleUsersList/usersList/usersList";
-import ButtonBase from "@/component/atoms/button/button";
-
 export function HomePage() {
 
   return (
@@ -11,7 +9,7 @@ export function HomePage() {
      
       <div className="flex justify-center">
           <div>
-            <UserList/>
+              <UserList/>
           </div>
       </div>
       {/* <div className="pagination-page flex justify-center py-8">

@@ -1,14 +1,11 @@
-import { UserDataProps } from "@/component/handleUsersList/dialogCreate"
 import { User } from "@/component/handleUsersList/usersList/usersList"
-import axios from "axios"
-import { mapUserToUserDataProps } from "@/component/handleUsersList/dialogCreate"
-
+import axios from '@/config/axios'
 const handleRegister =  (
     email:string | number,
     phone:number | string,
     username:string | number,
     password: string | number ) =>{
-     return axios.post('http://localhost:8080/api/v1/register', {
+     return axios.post('/api/v1/register', {
             email,
             phone,
             username,
@@ -21,7 +18,7 @@ const handleLoginPage =  (
     valueLogin: any,
     valuePassword: any
 ) =>{
-     return axios.post('http://localhost:8080/api/v1/login', {
+     return axios.post('/api/v1/login', {
         valueLogin,
         valuePassword
      })
@@ -30,19 +27,19 @@ const handleLoginPage =  (
 
 
 const handleFetchUsers = (page:number, results:number) => {
-    return axios.get(`http://localhost:8080/api/v1/user/getAllUser?page=${page}&results=${results}`)
+    return axios.get(`/api/v1/user/getAllUser?page=${page}&results=${results}`)
 };
 
 
 const handleDeleteUser = (user:User | null) => {
     if (user) {
-        return axios.delete('http://localhost:8080/api/v1/user/delete', { data: { id: user.id } });
+        return axios.delete('/api/v1/user/delete', { data: { id: user.id } });
       }
       return Promise.reject(new Error("User is null")); // Or handle null case as needed
 }
 
 const fetchPosition = () => {
-    return axios.get('http://localhost:8080/api/v1//position/read')
+    return axios.get('/api/v1//position/read')
 }
 
 const handleCreateUser = (
@@ -53,7 +50,7 @@ const handleCreateUser = (
     address: string | number,
     sex: string,
     positionID: number| string) =>{
-     return axios.post('http://localhost:8080/api/v1/user/create', {
+     return axios.post('/api/v1/user/create', {
             email,
             phone,
             username,
@@ -71,7 +68,7 @@ const handleUpdateUser =(
     sex: string,
     positionID:string| number
     ) =>{
-        return axios.put('http://localhost:8080/api/v1/user/update', {
+        return axios.put('/api/v1/user/update', {
                      id,
                      username,
                      address,

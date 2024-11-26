@@ -60,7 +60,6 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
   }
 
   const handleConfirmCreate = async () => {
-    console.log('create data successfully')
     await fetchUsers();
   }
 

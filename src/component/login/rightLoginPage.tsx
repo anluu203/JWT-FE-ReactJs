@@ -43,10 +43,9 @@ function RightLoginPage() {
     };
   
     const handleLogin = async () => {
-      const check = validateData();
-      const response = await handleLoginPage(valueLogin, valuePassword); // Gọi API đăng nhập
-      const validate = response.data;
-  
+      let check = validateData();
+      let response = await handleLoginPage(valueLogin, valuePassword); // Gọi API đăng nhập
+      let validate = response.data;
       if (check) {
         if (+validate.EC === 0) {
           toast.success(validate.EM); // Thông báo đăng nhập thành công

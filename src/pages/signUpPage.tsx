@@ -73,7 +73,6 @@ export const SignUpPage = () => {
         if (check) {
             if (check === true) {
             let response =  await handleRegister(email,phone, userName, password )
-
             let validate = response.data // validate data từ server
             if (+validate.EC === 0){
                 toast.success(validate.EM)
