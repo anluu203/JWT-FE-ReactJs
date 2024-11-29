@@ -1,9 +1,8 @@
 // UserList.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { handleFetchUsers } from "@/services/userService";
 import UserTable from "../usersTable/usersTable";
 import PaginationComponent from "../pagination/pagination";
-
 export interface Position{
   id?: number;
   name: string;
@@ -20,27 +19,32 @@ export interface User {
   position?: Position;
 }
 
-export const UserList: React.FC = () => {
+export const UserList: React.FC = () => {  
+
+
+
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentResults, setCurrentResults] = useState(3);
+  const [currentResults] = useState(3);
   const [totalPages, setTotalPages] = useState(0);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     var response = await handleFetchUsers(currentPage, currentResults);
     if (response.data.EC === 0) {
       setTotalPages(response.data.DT.totalPages);
       setListUsers(response.data.DT.users);
     }
-  };
+  }, [currentPage, currentResults]);
 
   useEffect(() => {
     fetchUsers();
-  }, [currentPage, currentResults]);
+  }, [fetchUsers]);
+  
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page);
   };
+
 
   return (
     <div className="relative">

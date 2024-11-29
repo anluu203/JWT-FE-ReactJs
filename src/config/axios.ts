@@ -1,7 +1,6 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 
-window.onerror = (message, source, lineno, colno, error) => {
+window.onerror = (message, error) => {
     console.error("Runtime Error:", message, error);
     return true; // Ngăn popup lỗi
   };
@@ -31,9 +30,7 @@ instance.interceptors.response.use(function (response) {
   }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    let err = error.response.data;
-    toast.error(err.EM)
-    return Promise.reject(error);
+    return error.response.data;
   });
 
   export default instance;

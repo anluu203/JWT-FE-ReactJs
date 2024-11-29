@@ -7,11 +7,9 @@ import InputReuseable from "../atoms/input/input";
 import ButtonBase from "../atoms/button/button";
 import { PRIMARY } from "@/helper/colors";
 import { handleLoginPage } from "@/services/userService";
-import { AccountContext } from "@/App";
-
+import { AppContext } from "@/hooks/useContext";
 function RightLoginPage() {
     const navigate = useNavigate();
-    const accountContext = useContext(AccountContext); // Sử dụng hook ngoài câu điều kiện
     const [valueLogin, setValueLogin] = useState("");
     const [valuePassword, setValuePassword] = useState("");
     
@@ -22,13 +20,13 @@ function RightLoginPage() {
     
     const [checkValid, setCheckValid] = useState(defaultValue);
   
-    // Nếu `accountContext` là `null`, trả về `null` sau khi gọi tất cả hook
-    if (!accountContext) {
-      return null;
+ 
+  
+    const appContext = useContext(AppContext)
+    if (!appContext) {
+      return null
     }
-  
-    const { setAccount } = accountContext;
-  
+    const {loginContext} = appContext
     const validateData = (): boolean => {
       setCheckValid(defaultValue);
       if (!valueLogin) {
@@ -48,14 +46,18 @@ function RightLoginPage() {
       let validate = response.data;
       if (check) {
         if (+validate.EC === 0) {
-          toast.success(validate.EM); // Thông báo đăng nhập thành công
+          toast.success(validate.EM); 
+          let positionWithRoles = validate.DT.positionWithRoles;
+          let email = validate.DT.email;
+          let username = validate.DT.username;
+          let token = validate.DT.access_token;
           const data = {
             isAuthenticated: true,
-            token: "fake token",
+            token: token,
+            account: {positionWithRoles, email, username},
+            isLoading: false
           };
-          
-          sessionStorage.setItem("account", JSON.stringify(data)); // Lưu vào sessionStorage
-          setAccount(data); // Cập nhật trạng thái `account`
+          loginContext(data)
           navigate("/home"); // Điều hướng đến trang chủ
         } else {
           toast.error(validate.EM);
@@ -152,6 +154,11 @@ function RightLoginPage() {
                 value={valuePassword}
                 onChange={(e) => setValuePassword(e.target.value)}
                 name="password"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleLogin();
+                  }
+                }}
                 className={`mt-5 ${
                   !checkValid.isValidPassWord || !checkValid.isValidLogin
                     ? `bg-red-100 border-red-200 

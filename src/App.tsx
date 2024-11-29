@@ -1,36 +1,29 @@
-import React, { createContext, useState, useEffect } from "react";
+import  {  useContext, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Puff } from "react-loader-spinner";
 import AppRouter from "./routers/AppRouters";
-
-// Định nghĩa kiểu cho `account`
-interface AccountType {
-  isAuthenticated: boolean;
-  token: string;
-}
-
-// Định nghĩa kiểu cho AccountContext
-interface AccountContextType {
-  account: AccountType;
-  setAccount: React.Dispatch<React.SetStateAction<AccountType>>;
-}
-// khởi tạo {account, setAccount} cho toàn cục bằng useContext
-export const AccountContext = createContext<AccountContextType | null>(null); 
+import { AppContext } from "./hooks/useContext";
 function App() {
-  const [account, setAccount] = useState<AccountType>({
-    isAuthenticated: false,
-    token: "",
-  });
-  useEffect(() => {
-    const session = sessionStorage.getItem("account");
-    if (session) {
-      setAccount(JSON.parse(session));
-    }
-  }, []);
-
+  const context = useContext(AppContext);
+  const [showLoading, setShowLoading] = useState(true);
+  if (!context) {
+    return <div>Error: AppContext is not available!</div>;
+  }
+  const { user } = context;
+  
   return (
-    <AccountContext.Provider value={{ account, setAccount }}>
-      <div className="App">
+    <>
+      {user && user.isLoading ? 
+      <div className="loading-container flex flex-col justify-center items-center h-screen">
+        <Puff
+           color= "#0078D4"
+           ariaLabel="loading" 
+        />
+        <div className="mt-5 text-xl">Loading...</div>
+      </div>
+      :
+        <div className="App">
         <AppRouter />
         <ToastContainer
           position="top-right"
@@ -44,9 +37,14 @@ function App() {
           pauseOnHover
           theme="light"
         />
-      </div>
-    </AccountContext.Provider>
+      </div>      
+      }
+
+    </>
   );
 }
+
+
+
 
 export default App;

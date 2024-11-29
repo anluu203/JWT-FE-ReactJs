@@ -24,7 +24,9 @@ const handleLoginPage =  (
      })
 }
 
-
+const handleLogout = () =>{
+    return axios.post('/api/v1/logout')
+}
 
 const handleFetchUsers = (page:number, results:number) => {
     return axios.get(`/api/v1/user/getAllUser?page=${page}&results=${results}`)
@@ -39,7 +41,7 @@ const handleDeleteUser = (user:User | null) => {
 }
 
 const fetchPosition = () => {
-    return axios.get('/api/v1//position/read')
+    return axios.get('/api/v1/position/read')
 }
 
 const handleCreateUser = (
@@ -78,9 +80,11 @@ const handleUpdateUser =(
              });
 }
 
-
+const getUserAccount = () =>{
+    return axios.get('/api/v1/account')
+}
 
 export {handleRegister, handleLoginPage, handleFetchUsers,
         handleDeleteUser, fetchPosition, handleCreateUser,
-        handleUpdateUser
+        handleUpdateUser, getUserAccount, handleLogout
     }

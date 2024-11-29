@@ -5,13 +5,14 @@ interface InputProps {
   placeholder?: string;
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (React.KeyboardEventHandler<HTMLInputElement>)
   type?: string;
   name?: string;
   disabled?:boolean
   className?:string | {};
 }
 
-const InputReuseable: React.FC<InputProps> = ({ label, placeholder, value, onChange, type = 'text', name, className ='', disabled }) => {
+const InputReuseable: React.FC<InputProps> = ({ label, className ='',...rest }) => {
   return (
     <>
     {label && (
@@ -20,12 +21,7 @@ const InputReuseable: React.FC<InputProps> = ({ label, placeholder, value, onCha
         </label>
       )}
       <input
-        type={type}
-        name={name}
-        disabled={disabled}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
+        {...rest}
         className={`w-full px-4 py-4 
                     rounded-lg font-medium 
                     bg-gray-100 border border-gray-200 

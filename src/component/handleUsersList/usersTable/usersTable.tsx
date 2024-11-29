@@ -1,5 +1,5 @@
 // UserTable.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { User } from "../usersList/usersList";
 import ButtonBase from "../../atoms/button/button";
@@ -24,6 +24,7 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
   const [actionDialog, setActionDialog] = useState('CREATE')
   const [dataDialog, setDataDialog] = useState({})
   const [disabled, setDisabled] = useState<boolean>(false);
+
 
   const handleOpenDialogDelete = (user: User) => {
     setSelectedUser(user)
@@ -69,8 +70,6 @@ const UserTable: React.FC<UserTableProps> = ({ listUsers, fetchUsers, currentPag
     setDataDialog(user)
     setDisabled(true)
   }
-
-
   return (
     <>
       <div className="list-button mb-3">

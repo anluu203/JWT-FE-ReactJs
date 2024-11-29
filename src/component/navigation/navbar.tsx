@@ -8,9 +8,11 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import React, { useContext } from "react";
-import { AccountContext } from "@/App";
+import { useContext, useEffect } from "react";
+import { AppContext } from "@/hooks/useContext";
+import { handleLogout } from "@/services/userService";
 const navigation = [
   { name: "Home", to: "#", current: true },
   { name: "Dashboard", to: "#", current: false },
@@ -23,13 +25,16 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
-  const accountContext = useContext(AccountContext);
-  if (!accountContext) return null;
-  const { setAccount } = accountContext;
 
-  const handleSignout = () => {
-    sessionStorage.removeItem("account");
-    setAccount({ isAuthenticated: false, token: "" }); // Cập nhật trạng thái để re-render ứng dụng
+  const context = useContext(AppContext)
+  if (!context) {
+    return null
+  }
+  const {logout} = context
+  const handleSignout = async () => {
+    logout()
+    let res = await handleLogout();
+    toast.success(res.data.EM)
   };
 
   return (
@@ -116,13 +121,12 @@ export default function Navbar() {
                   </Link>
                 </MenuItem>
                 <MenuItem>
-                  <Link
-                    to="/login"
+                  <div
                     onClick={() => handleSignout()}
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                   >
                     Sign out
-                  </Link>
+                  </div>
                 </MenuItem>
               </MenuItems>
             </Menu>
