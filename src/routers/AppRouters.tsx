@@ -16,7 +16,6 @@ const AppRouter: React.FC = () => {
     return <div>Error: AppContext is not available!</div>;
   }
   const { user } = context;
-  console.log('user in router :', user)
   return (
     
     <Router>

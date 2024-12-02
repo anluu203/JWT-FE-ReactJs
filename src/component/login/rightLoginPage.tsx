@@ -57,6 +57,7 @@ function RightLoginPage() {
             account: {positionWithRoles, email, username},
             isLoading: false
           };
+          localStorage.setItem('jwt', token)
           loginContext(data)
           navigate("/home"); // Điều hướng đến trang chủ
         } else {

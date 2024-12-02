@@ -1,0 +1,8 @@
+#Những bug còn tồn đọng :
+1. Hiện tại trang web xác thực ng dùng bằng Cookies và Local storage :
+    - Mới viết logic xác thực bằng cookies, chưa viết cho Local storage => khi xóa token ở cookies
+      thì web sẽ đẩy về trang login 
+2. Khi thoát app ra vào lại mặc định sẽ đẩy về trang login, tuy nhiên nếu chưa đăng xuất user và token
+   vẫn còn hạn thì sẽ bị bug là trang login bị dính phải navbar. 
+   => Phải viết logic là khi đăng nhập xong thì ko có quyền vào trang login nữa, mặc định sẽ đẩy về
+   trang home.      
